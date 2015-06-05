@@ -1,0 +1,58 @@
+.bv-hide-template {
+  display: none;
+}
+
+.bv-oppethus-container {
+  min-height: 200px;
+}
+
+.bv-ks-date-row:nth-child(even) {
+  background-color: #eee;
+}
+
+.bv-ks-date-row:before,
+.bv-ks-date-row:after {
+  content: '';
+  display: block;
+}
+
+.bv-ks-date-row:after {
+  clear: both;
+}
+
+.bv-ks-date-row > div {
+  float: left;
+  width: 25%;
+  padding: 5px 0 5px 0;
+}
+
+.bv-ks-date-row input[type=text] {
+  float: left;
+  padding: 5px;
+  width: 75px;
+}
+
+.bv-ks-date-row .ui-datepicker-trigger {
+  height: 16px;
+  width: 16px;
+  padding: 5px;
+  float: left;   
+}
+
+.bv-ks-date-row i {
+  padding: 5px;
+  color: #D9534F;
+}
+
+#ui-datepicker-div {
+  background-color: white;
+}
+/*
+form[id=Super-Steer-Fighter-Plus-alpha] {
+  display: none;
+}
+*/
+.bv-add-oppethus i, .bv-store-oppethus i {
+   padding: 5px;
+}
+
