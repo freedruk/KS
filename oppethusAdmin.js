@@ -78,7 +78,7 @@ KS.admin_oppethus = (function($, KS, dates, undefined) {
       _adminDates.push(ksDateObject);
     });
 
-    $form.find("input[id=data]").first().val(JSON.stringify(_adminDates));
+    $form.find("input[id=ksdata]").first().val(JSON.stringify(_adminDates));
     $form.submit();
     console.log(JSON.stringify(_adminDates));
   };
