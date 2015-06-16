@@ -108,10 +108,12 @@ $(document).ready(function() {
     KS.utils = (function($, undefined){
       var _makeEntireParentClickable = function($parentEl) {
          $parentEl.on("click", function(e){  
-            if($(e.target).is("a"))
+            if($(e.target).is("a")){
               window.location.href = $(e.target).attr("href");
+              return false;
+            }
             var $link = $(this).find("a").first();
-            $link.click();
+            window.location.href = $link.attr("href");
          }); 
       };
       
@@ -133,14 +135,17 @@ $(document).ready(function() {
     var $linkRowLinks = $(".bv-js-international-links");
     var $linkRowMenuLi = $(".bv-international-menu");
 
+       
+    /* Länkmeny för skola */
+
+    //var $mainLis = $(".bv-school-link-block ul li");
+
     KS.oppethus.init();
     KS.utils.makeEntireParentClickable($navLiA);
     KS.utils.makeEntireParentClickable($(".bv-image-link-module"));
     KS.utils.makeEntireParentClickable($(".bv-school-menu-navitems .global-navigation-links"));
-    
-    /* Länkmeny för skola */
-
-    var $mainLis = $(".bv-school-link-block ul li");
+    KS.utils.makeEntireParentClickable($(".bv-herobanner-subpage-wrapper"));
+    KS.utils.makeEntireParentClickable($(".bv-school-link-block .bv-js-linkable"));
 
     $("<div></div>").addClass("bv-js-mq-checker").appendTo($("body"));
     $linkRowLinks.clone().appendTo($linkRowMenuLi);
@@ -200,13 +205,13 @@ $(document).ready(function() {
 
     /* Länkblockmenyn */
 
-    $mainLis.on("click", function(e) {
+    /*$mainLis.on("click", function(e) {
         if ($(e.target).is("a"))
             window.location.href = $(e.target).attr("href");
 
         var $link = $(this).find("a").first();
         $link.click();
-    });
+    });*/
 
     var $moreButton = $('.bv-js-more-button'); // This is a li-element
 
