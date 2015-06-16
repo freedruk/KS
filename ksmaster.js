@@ -38,7 +38,7 @@ $(document).ready(function() {
 
         var _init = function() {
             _dates.forEach(function(el) {
-                el.date = new Date(el.year, el.month, el.day, el.startHour, el.startMinute);
+                el.date = new Date(el.year, (parseInt(el.month)-1), el.day, el.startHour, el.startMinute);
                 el.dayOfWeek = el.date.getDay();
                 el.jqElement = $("<div></div>")
                     .attr("id", "de-" + el.svid)
@@ -76,7 +76,12 @@ $(document).ready(function() {
             var $text = $("<div></div>").addClass(_settings.dateEntryTextClasses);
 
             relevantDates.forEach(function(el) {
-                var innerHtml = "<div><h2>" + DAY_NAMES[el.dayOfWeek] + " " + el.day + " " + MONTH_NAMES[el.month] + "</h2></div><div class='thedate'>" + el.startHour + ":" + el.startMinute + "-" + el.endHour + ":" + el.endMinute + "</div>";
+                el.startHour = (parseInt(el.startHour) < 10) ? "0" + el.startHour : el.startHour;
+                el.startMinute = (parseInt(el.startMinute) < 10) ? "0" + el.startMinute : el.startMinute;
+                el.endHour = (parseInt(el.endHour) < 10) ? "0" + el.endHour : el.endHour;
+                el.endMinute = (parseInt(el.endMinute) < 10) ? "0" + el.endMinute : el.endMinute;                
+                
+                var innerHtml = "<div><h2>" + DAY_NAMES[el.dayOfWeek] + " " + el.day + " " + MONTH_NAMES[(parseInt(el.month)-1)] + "</h2></div><div class='thedate'>" + el.startHour + ":" + el.startMinute + "-" + el.endHour + ":" + el.endMinute + "</div>";
                 var $currentIcon = $icon.clone();
                 var $currentText = $text.clone();
 
@@ -98,11 +103,29 @@ $(document).ready(function() {
         };
     })(jQuery, dates);
 
-    KS.oppethus.init();
+     /* FUNCTIONALITY THAT IS USED IN MORE THAN ONE PLACES */
+
+    KS.utils = (function($, undefined){
+      var _makeEntireParentClickable = function($parentEl) {
+         $parentEl.on("click", function(e){  
+            if($(e.target).is("a"))
+              window.location.href = $(e.target).attr("href");
+            var $link = $(this).find("a").first();
+            $link.click();
+         }); 
+      };
+      
+       return {
+         makeEntireParentClickable: _makeEntireParentClickable        
+       };
+
+    })(jQuery);
+    
     var $navItems = $(".bv-navitems");
     var $searchBox = $(".bv-nav .bv-navsearch");
     var $searchCloseButton = $(".bv-nav .bv-closesearch");
     var $navLi = $(".bv-navitems .global-navigation-links");
+    var $navLiA = $(".bv-navitems .global-navigation-links.bv-js-navigation");
     var $searchLi = $(".bv-nav .bv-desktopsearch");
     var $schoolButtonDesktop = $(".bv-nav .bv-select-school-button");
     var $schoolButtonMobile = $(".bv-nav .bv-select-school-button-mobile");
@@ -110,6 +133,11 @@ $(document).ready(function() {
     var $linkRowLinks = $(".bv-js-international-links");
     var $linkRowMenuLi = $(".bv-international-menu");
 
+    KS.oppethus.init();
+    KS.utils.makeEntireParentClickable($navLiA);
+    KS.utils.makeEntireParentClickable($(".bv-image-link-module"));
+    KS.utils.makeEntireParentClickable($(".bv-school-menu-navitems .global-navigation-links"));
+    
     /* Länkmeny för skola */
 
     var $mainLis = $(".bv-school-link-block ul li");
