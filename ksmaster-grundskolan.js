@@ -113,7 +113,9 @@ $(document).ready(function() {
               return false;
             }
             var $link = $(this).find("a").first();
-            window.location.href = $link.attr("href");
+            if($link.length > 0)
+               window.location.href = $link.attr("href");
+            return false;
          }); 
       };
       
@@ -150,11 +152,10 @@ $(document).ready(function() {
     $("<div></div>").addClass("bv-js-mq-checker").appendTo($("body"));
     $linkRowLinks.clone().appendTo($linkRowMenuLi);
 
-    $(window).on("resize", function() {
+    $(window).on("resize orientationchange", function() {
 
         if (checkMediaQuery() === "'default'") {
-            //var $dialog = $(".bv-nav .bv-schoolmenu");
-
+            
             //if(!$dialog.hasClass("bv-superhide") && !$dialog.hasClass("animate"))
             //   $dialog.addClass("bv-superhide");
 
@@ -163,6 +164,15 @@ $(document).ready(function() {
         } else {
             if ($searchBox.css("display") !== "none")
                 $searchCloseButton.click();
+                
+            var $dialog = $(".bv-nav .bv-schoolmenu");
+            var $menuOptions = $(".bv-nav .bv-menuoptions");
+            
+            if($dialog.hasClass("animate") && !$menuOptions.hasClass("animate")){
+              $menuOptions.addClass("open-height animate");
+              if ($navItems.css("display") == "none")
+                $navItems.css('display', 'block');  
+            }
         }
     });
 
@@ -191,13 +201,32 @@ $(document).ready(function() {
 
     $schoolButtonMobile.on("click", function() {
         var $dialog = $(".bv-nav .bv-schoolmenu");
+        var $menuOptions = $(".bv-nav .bv-menuoptions");
         if ($dialog.hasClass("bv-superhide"))
             $dialog.removeClass("bv-superhide");
         $dialog.toggleClass("animate");
+        //$menuOptions.toggleClass("open-height");
+        $menuOptions.toggleClass("animate");
     });
 
     $hamburgerMenu.on("click", function() {
-        $navItems.slideToggle("slow", function() {});
+        var $menuOptions = $(".bv-nav .bv-menuoptions");
+        
+        if($menuOptions.hasClass("animate")){
+          $menuOptions.removeClass("animate");
+          $menuOptions.removeClass("onego");
+          $menuOptions.attr("data-animate","true");
+        }
+        $menuOptions.toggleClass("open-height");
+        
+        $navItems.slideToggle(200, function() {
+          
+          if($menuOptions.is("[data-animate=true]") && $menuOptions.hasClass("open-height")){
+            $menuOptions.addClass("animate");
+            $menuOptions.addClass("onego");
+            $menuOptions.attr("data-animate","false");
+          }
+        });
     });
 
 

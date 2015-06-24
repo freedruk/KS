@@ -113,7 +113,9 @@ $(document).ready(function() {
               return false;
             }
             var $link = $(this).find("a").first();
-            window.location.href = $link.attr("href");
+            if($link.length > 0)
+               window.location.href = $link.attr("href");
+            return false;
          }); 
       };
       
