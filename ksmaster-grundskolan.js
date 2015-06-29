@@ -4,6 +4,8 @@ var MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep'
 var DAY_NAMES = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'];
 var NUMER_OF_ENTRIES = 3;
 
+var bodyOuterWidth = 0;
+
 $(document).ready(function() {
     if (!hasCSSFeature("transition")) {
         $("html").addClass("noCSSTransitions");
@@ -136,7 +138,8 @@ $(document).ready(function() {
     var $hamburgerMenu = $(".bv-mobile-button");
     var $linkRowLinks = $(".bv-js-international-links");
     var $linkRowMenuLi = $(".bv-international-menu");
-
+    
+    bodyOuterWidth = $("body").outerWidth();
        
     /* Länkmeny för skola */
 
@@ -152,27 +155,32 @@ $(document).ready(function() {
     $("<div></div>").addClass("bv-js-mq-checker").appendTo($("body"));
     $linkRowLinks.clone().appendTo($linkRowMenuLi);
 
-    $(window).on("resize orientationchange", function() {
-
+    var windowEvents = "resize";
+    
+    /*if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i)) || (navigator.userAgent.match(/iPad/i))) {
+      windowEvents += " orientationchange";
+     }*/
+    
+    
+    $(window).on(windowEvents, function() {
+      if(bodyOuterWidth == $("body").outerWidth())
+         return;
+      
+      bodyOuterWidth = $("body").outerWidth();
+      
+      var $dialog = $(".bv-nav .bv-schoolmenu");
+      var $menuOptions = $(".bv-nav .bv-menuoptions");
+      
+      $dialog.removeClass("animate");
+      $menuOptions.removeClass("open-height animate");
+                   
         if (checkMediaQuery() === "'default'") {
-            
-            //if(!$dialog.hasClass("bv-superhide") && !$dialog.hasClass("animate"))
-            //   $dialog.addClass("bv-superhide");
-
+           
             if ($navItems.css("display") == "none")
                 $navItems.css('display', '');
         } else {
             if ($searchBox.css("display") !== "none")
                 $searchCloseButton.click();
-                
-            var $dialog = $(".bv-nav .bv-schoolmenu");
-            var $menuOptions = $(".bv-nav .bv-menuoptions");
-            
-            if($dialog.hasClass("animate") && !$menuOptions.hasClass("animate")){
-              $menuOptions.addClass("open-height animate");
-              if ($navItems.css("display") == "none")
-                $navItems.css('display', 'block');  
-            }
         }
     });
 
@@ -207,18 +215,27 @@ $(document).ready(function() {
         $dialog.toggleClass("animate");
         //$menuOptions.toggleClass("open-height");
         $menuOptions.toggleClass("animate");
+        if ($navItems.css("display") == "none")
+          $navItems.css('display', 'block'); 
     });
 
     $hamburgerMenu.on("click", function() {
         var $menuOptions = $(".bv-nav .bv-menuoptions");
         
+        $menuOptions.toggleClass("open");
+        
         if($menuOptions.hasClass("animate")){
           $menuOptions.removeClass("animate");
           $menuOptions.removeClass("onego");
+          $menuOptions.removeClass("open-height");
           $menuOptions.attr("data-animate","true");
         }
-        $menuOptions.toggleClass("open-height");
         
+        if($menuOptions.hasClass("open"))
+          $menuOptions.addClass("open-height");
+        else
+          $menuOptions.removeClass("open-height");
+          
         $navItems.slideToggle(200, function() {
           
           if($menuOptions.is("[data-animate=true]") && $menuOptions.hasClass("open-height")){
